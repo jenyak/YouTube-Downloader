@@ -174,6 +174,15 @@ class SignatureDecipher
                 die("\n==== Failed to get signature function ====");
             }
         }
+        
+        if (!$signatureFunction) {
+            $pattern = '/yt\.akamaized\.net\/\)\s*\|\|\s*.*?\s*c\s*&&\s*d\.set\([^,]+\s*,\s*([a-zA-Z0-9$]+)\(/';
+            preg_match($pattern, $decipherScript, $matches);
+
+            if (!empty($matches[1])) {
+                $signatureFunction = $matches[1];
+            }
+        }
 
         $logger->debug(
             '{method}: signatureFunction = {signatureFunction}',
